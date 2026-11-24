@@ -17,7 +17,12 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - uses: android-actions/setup-android@v3   # menerima lisensi SDK
+      # Android SDK sudah terpasang di runner GitHub; cukup terima lisensi + pastikan platform 35
+      - name: Siapkan Android SDK
+        run: |
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" "platforms;android-35" "build-tools;35.0.0"
 
       # Memasang Gradle 8.9 langsung, jadi tidak perlu gradle-wrapper.jar
       - uses: gradle/actions/setup-gradle@v4
